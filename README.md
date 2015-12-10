@@ -1,6 +1,15 @@
 VTR [Vim Tmux Runner]
 =====================
 
+This fork exists to simplify things; our team uses tmate (which makes detatching the runner impossible because tmate disables the 'break-pane' command).
+
+Also we have found that if you manually exit from your tmux runner pane, you cannot open a new one.
+
+To just simplify things, I'm removing some of the logic that checks to see if a tmux-runner pane exists; instead, if you want to make one, it will get made.  The old one (if it exists) just becomes an extra pane.  no harm done.
+
+hats off to chris toomey and whoever he inherited from to make this.  indispensable.
+
+
 A simple, vimscript only, command runner for sending commands from vim to tmux.
 
 Usage
