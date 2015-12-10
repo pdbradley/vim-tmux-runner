@@ -35,6 +35,8 @@ function! s:CreateRunnerPane(...)
 endfunction
 
 function! s:DetachRunnerPane()
+    "disabling b/c doesn't work in tmate
+    return
     if !s:ValidRunnerPaneSet() | return | endif
     call s:BreakRunnerPaneToTempWindow()
     let cmd = join(["rename-window -t", s:detached_window, g:VtrDetachedName])
@@ -43,12 +45,16 @@ endfunction
 
 function! s:ValidRunnerPaneSet()
     if !exists("s:runner_pane")
-        call s:EchoError("No runner pane attached.")
-        return 0
+        call s:CreateRunnerPane()
+        return 1
+        "call s:EchoError("No runner pane attached.")
+        "return 0
     endif
     if !s:ValidRunnerPaneNumber(s:runner_pane)
-        call s:EchoError("Runner pane setting (" . s:runner_pane . ") is invalid. Please reattach.")
-        return 0
+        call s:CreateRunnerPane()
+        return 1
+        "call s:EchoError("Runner pane setting (" . s:runner_pane . ") is invalid. Please reattach.")
+        "return 0
     endif
     return 1
 endfunction
@@ -357,17 +363,19 @@ function! s:SendCommandToRunner(ensure_pane, ...)
 endfunction
 
 function! s:EnsureRunnerPane(...)
-    if exists('s:detached_window')
-        call s:ReattachPane()
-    elseif exists('s:runner_pane')
-        return
-    else
+    "detached window isn't possible
+
+    "if exists('s:detached_window')
+    "    call s:ReattachPane()
+    "elseif exists('s:runner_pane')
+    "    return
+    "else
         if exists('a:1')
             call s:CreateRunnerPane(a:1)
         else
             call s:CreateRunnerPane()
         endif
-    endif
+    "endif
 endfunction
 
 function! s:SendLinesToRunner(ensure_pane) range
